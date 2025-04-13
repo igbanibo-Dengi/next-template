@@ -4,9 +4,10 @@ import { findVerificationTokenByToken } from "@/resources/verification-token-que
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 
-type PageProps = { searchParams: { token: string } };
+type PageProps = { searchParams: Promise<{ token: string }> };
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page(props: PageProps) {
+    const searchParams = await props.searchParams;
     const verificationToken = await findVerificationTokenByToken(
         searchParams.token,
     );

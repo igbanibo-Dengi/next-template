@@ -1,7 +1,7 @@
 "use server"
 
 import { signIn } from "@/auth"
-import { isRedirectError } from "next/dist/client/components/redirect"
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 export async function oauthAction(provider: "google" | "github") {
     try {

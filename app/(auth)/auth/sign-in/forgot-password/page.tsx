@@ -5,9 +5,10 @@ import { ResetPasswordForm } from "../../_components/reset-password-form";
 import { KeyRound, XCircle } from "lucide-react";
 import { ForgotPasswordForm } from "../../_components/forgot-password-form";
 
-type PageProps = { searchParams: { token: string } };
+type PageProps = { searchParams: Promise<{ token: string }> };
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page(props: PageProps) {
+    const searchParams = await props.searchParams;
     const verificationToken = await findVerificationTokenByToken(
         searchParams.token,
     );
