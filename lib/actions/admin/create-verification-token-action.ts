@@ -1,7 +1,7 @@
 "use server";
 
-import db from "@/drizzle";
-import { verificationTokens } from "@/drizzle/schema";
+import db from "@/database/drizzle";
+import { verificationTokens } from "@/database/drizzle/schema";
 import { VERIFICATION_TOKEN_EXP_MIN } from "@/lib/constants";
 
 export async function createVerificationTokenAction(

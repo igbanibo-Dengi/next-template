@@ -1,7 +1,10 @@
 "use server";
 
 import { signIn } from "@/auth";
+import ratelimit from "@/lib/ratelimit";
 import { AuthError } from "next-auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 type Res =
     | { success: true }
@@ -16,6 +19,11 @@ export async function signInAction(values: unknown): Promise<Res> {
         ) {
             throw new Error("Invalid JSON Object");
         }
+
+        const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+        const { success } = await ratelimit.limit(ip);
+
+        if (!success) return redirect("/too-fast");
 
         await signIn("credentials", { ...values, redirect: false });
 

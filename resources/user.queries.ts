@@ -1,6 +1,6 @@
 import "server-only"
-import db from "@/drizzle"
-import { lower, users } from "@/drizzle/schema"
+import db from "@/database/drizzle"
+import { lower, users } from "@/database/drizzle/schema"
 import {
     desc,
     eq,

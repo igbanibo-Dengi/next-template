@@ -1,5 +1,6 @@
 "use server";
 
+import config from "@/lib/config";
 import { VERIFICATION_TOKEN_EXP_MIN } from "@/lib/constants";
 import transport from "@/lib/nodemailer";
 
@@ -25,7 +26,7 @@ export async function sendForgotPasswordEmail({
       <p>Please use the link below to access the reset password form on Authy. This link will expire in ${VERIFICATION_TOKEN_EXP_MIN} minutes. If you don't think you should be receiving this email, you can safely ignore it.</p>
 
       <p style="text-align: center;">
-        <a href="${process.env.AUTH_URL}/auth/sign-in/forgot-password?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #eab308; text-decoration: none; border-radius: 5px;">Reset Password Form</a>
+        <a href="${config.env.apiEndpoint}/auth/sign-in/forgot-password?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #eab308; text-decoration: none; border-radius: 5px;">Reset Password Form</a>
       </p>
       
       <br />

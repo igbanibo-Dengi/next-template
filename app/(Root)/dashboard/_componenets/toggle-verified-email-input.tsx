@@ -1,6 +1,6 @@
 "use client";
 
-import { users } from "@/drizzle/schema";
+import { users } from "@/database/drizzle/schema";
 import { toggleEmailVerifiedAction } from "@/lib/actions/admin/toggle-email-verification.actions";
 import { useTransition } from "react";
 

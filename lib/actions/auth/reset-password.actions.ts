@@ -1,12 +1,12 @@
 "use server";
 
-import { users, verificationTokens } from "@/drizzle/schema";
+import { users, verificationTokens } from "@/database/drizzle/schema";
 import { findVerificationTokenByToken } from "@/resources/verification-token-queries";
 import { ResetPasswordSchema } from "@/validators/reset-password-validator";
 import * as v from "valibot";
 import bcrypt from 'bcrypt'
 // import argon2 from "argon2";
-import db from "@/drizzle";
+import db from "@/database/drizzle";
 import { eq } from "drizzle-orm";
 import { findUserByEmail } from "@/resources/user.queries";
 

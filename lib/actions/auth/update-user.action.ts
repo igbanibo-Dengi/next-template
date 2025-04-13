@@ -3,8 +3,8 @@
 import * as v from "valibot";
 import { UpdateUserInfoSchema } from "@/validators/update-user-info-validator";
 import { auth } from "@/auth";
-import { users } from "@/drizzle/schema";
-import db from "@/drizzle";
+import { users } from "@/database/drizzle/schema";
+import db from "@/database/drizzle";
 import { eq } from "drizzle-orm";
 
 type Res =

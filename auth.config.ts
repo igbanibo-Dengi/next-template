@@ -2,13 +2,14 @@ import type { NextAuthConfig } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
-import db from "@/drizzle";
-import * as schema from "@/drizzle/schema";
+import db from "@/database/drizzle";
+import * as schema from "@/database/drizzle/schema";
 import { oauthVerifyEmailAction } from "./lib/actions/auth/oauthVerifyEmail.actions";
 import { USER_ROLES } from "./lib/constants";
 import type { AdapterUser } from "@auth/core/adapters";
 import { getTableColumns } from "drizzle-orm";
 import { findAdminUserEmailAddresses } from "./resources/admin-user-email-address-queries";
+import config from "./lib/config";
 
 
 export const authConfig = {
@@ -39,7 +40,7 @@ export const authConfig = {
         }
     },
     session: { strategy: "jwt" },
-    secret: process.env.AUTH_SECRET,
+    secret: config.env.authSecret,
     pages: { signIn: "/auth/sign-in" },
     callbacks: {
         authorized({ auth, request }) {

@@ -15,3 +15,14 @@ declare module "next-auth/jwt" {
         role: (typeof users.$inferSelect)["role"]
     }
 }
+
+
+declare module "@auth/core/adapters" {
+    interface AdapterUser {
+        role: "user" | "admin";
+    }
+}
+
+export interface ExtendedAdapterUser extends CoreAdapterUser {
+    role: "user" | "admin";
+}

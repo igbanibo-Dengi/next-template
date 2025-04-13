@@ -3,13 +3,16 @@
 import * as v from 'valibot'
 import { SignupSchema } from "@/validators/signup-validator"
 import bcrypt from 'bcrypt'
-import db from '@/drizzle'
-import { lower, users } from '@/drizzle/schema'
+import db from '@/database/drizzle'
+import { lower, users } from '@/database/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { USER_ROLES } from '@/lib/constants'
 import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
 import { createVerificationTokenAction } from '../admin/create-verification-token-action'
 import { sendSignupUserEmail } from './mail/send-signup-user-email'
+import { headers } from 'next/headers'
+import ratelimit from '@/lib/ratelimit'
+import { redirect } from 'next/navigation'
 
 type Res =
     | { success: true }
@@ -18,6 +21,11 @@ type Res =
 
 export async function signUpAction(values: unknown): Promise<Res> {
     const parsedValues = v.safeParse(SignupSchema, values);
+
+    const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+    const { success } = await ratelimit.limit(ip);
+
+    if (!success) return redirect("/too-fast");
 
     if (!parsedValues.success) {
         const flatErors = v.flatten(parsedValues.issues);

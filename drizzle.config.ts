@@ -1,7 +1,8 @@
 import { defineConfig } from "drizzle-kit"
 import type { Config } from "drizzle-kit"
+import config from "./lib/config";
 
-const DATABASE_URL = process.env.DATABASE_URL ?? "";
+const DATABASE_URL = config.env.databaseUrl ?? "";
 
 const drizzleConfig = {
     schema: "drizzle/schema.ts",

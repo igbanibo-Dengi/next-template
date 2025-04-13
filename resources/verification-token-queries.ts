@@ -1,5 +1,5 @@
-import db from "@/drizzle";
-import { verificationTokens } from "@/drizzle/schema";
+import db from "@/database/drizzle";
+import { verificationTokens } from "@/database/drizzle/schema";
 import { eq } from "drizzle-orm";
 import "server-only";
 

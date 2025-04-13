@@ -1,5 +1,6 @@
 "use server";
 
+import config from "@/lib/config";
 import { VERIFICATION_TOKEN_EXP_MIN } from "@/lib/constants";
 import transport from "@/lib/nodemailer";
 
@@ -25,7 +26,7 @@ export async function sendSignupUserEmail({
       <p>Please use the link below to verify your email address and continue on Authy. This link will expire in ${VERIFICATION_TOKEN_EXP_MIN} minutes. If you don't think you should be receiving this email, you can safely ignore it.</p>
 
       <p style="text-align: center;">
-        <a href="${process.env.AUTH_URL}/auth/sign-up/verify-email?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Verify Email</a>
+        <a href="${config.env.apiEndpoint}/auth/sign-up/verify-email?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Verify Email</a>
       </p>
       
       <br />
