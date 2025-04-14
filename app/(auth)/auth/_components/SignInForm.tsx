@@ -33,6 +33,11 @@ export const SignInForm = () => {
     // console.log(values);
     const res = await signInAction(values);
 
+    if (res.redirectTo) {
+      router.push(res.redirectTo);
+      return;
+    }
+
     if (res.success) {
       // reset();
       window.location.href = "/profile"

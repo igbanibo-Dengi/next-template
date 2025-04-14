@@ -32,6 +32,11 @@ export const SignupForm = () => {
   const submit = async (values: SignupInput) => {
     const res = await signUpAction(values);
 
+    if (res.redirectTo) {
+      router.push(res.redirectTo);
+      return;
+    }
+
     if (res.success) {
       router.push("/auth/sign-up/success")
     } else {

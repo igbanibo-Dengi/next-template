@@ -7,8 +7,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 type Res =
-    | { success: true }
-    | { success: false; error: string; statusCode: 401 | 500 };
+    | { success: true, redirectTo?: string }
+    | { success: false; error: string; statusCode: 401 | 500, redirectTo?: string }
+// | { success: false; redirectTo: string };
+
 
 export async function signInAction(values: unknown): Promise<Res> {
     try {
@@ -23,7 +25,15 @@ export async function signInAction(values: unknown): Promise<Res> {
         const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
         const { success } = await ratelimit.limit(ip);
 
-        if (!success) return redirect("/too-fast");
+        // if (!success) return redirect("/too-fast");
+        if (!success) {
+            return {
+                success: false,
+                redirectTo: "/too-fast",
+                error: "Too many requests",
+                statusCode: 401,
+            };
+        }
 
         await signIn("credentials", { ...values, redirect: false });
 
