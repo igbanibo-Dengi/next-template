@@ -13,6 +13,8 @@ import { sendSignupUserEmail } from './mail/send-signup-user-email'
 import { headers } from 'next/headers'
 import ratelimit from '@/lib/ratelimit'
 import { redirect } from 'next/navigation'
+import { workflowClient } from '@/lib/workflow'
+import config from '@/lib/config'
 
 type Res =
     | { success: true, redirectTo?: string }
@@ -54,10 +56,14 @@ export async function signUpAction(values: unknown): Promise<Res> {
             if (!existingUser.emailVerified) {
                 const verificationToken = await createVerificationTokenAction(existingUser.email)
                 // send vefification email
-                await sendSignupUserEmail({
-                    email: existingUser.email,
-                    token: verificationToken.token
-                })
+                await workflowClient.trigger({
+                    url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+                    body: {
+                        email,
+                        name,
+                        token: verificationToken.token,
+                    },
+                });
 
 
                 return {
@@ -100,10 +106,20 @@ export async function signUpAction(values: unknown): Promise<Res> {
         const verificationToken = await createVerificationTokenAction(newUser.email)
         console.log(verificationToken);
 
-        await sendSignupUserEmail({
-            email: newUser.email,
-            token: verificationToken.token
-        })
+        // await sendSignupUserEmail({
+        //     email: newUser.email,
+        //     token: verificationToken.token
+        // })
+
+        await workflowClient.trigger({
+            url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+            body: {
+                email,
+                name,
+                token: verificationToken.token,
+            },
+        });
+
 
         // send verification email
 

@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "last_activity_date" date DEFAULT now();

@@ -9,6 +9,7 @@ import {
     pgEnum,
     type AnyPgColumn,
     uniqueIndex,
+    date,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -31,6 +32,7 @@ export const users = pgTable(
         image: text("image"),
         password: text("password"),
         role: roleEnum("role").notNull().default("user"),
+        lastActivityDate: date("last_activity_date").defaultNow(),
     },
     (table) => ({
         emailUniqueIndex: uniqueIndex("emailUniqueIndex").on(lower(table.email)),
