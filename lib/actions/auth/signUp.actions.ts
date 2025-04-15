@@ -27,6 +27,8 @@ export async function signUpAction(values: unknown): Promise<Res> {
     const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
     const { success } = await ratelimit.limit(ip);
 
+    const productionUrl = config.env.prodApiEndpoint
+
     if (!success) {
         return {
             success: false,
@@ -55,6 +57,8 @@ export async function signUpAction(values: unknown): Promise<Res> {
         if (existingUser?.id) {
             if (!existingUser.emailVerified) {
                 const verificationToken = await createVerificationTokenAction(existingUser.email)
+                console.log('token', verificationToken.token, 'productionUrl', productionUrl);
+
                 // send vefification email
                 await workflowClient.trigger({
                     url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
@@ -62,6 +66,7 @@ export async function signUpAction(values: unknown): Promise<Res> {
                         email,
                         name,
                         token: verificationToken.token,
+                        productionUrl
                     },
                 });
 
@@ -104,12 +109,9 @@ export async function signUpAction(values: unknown): Promise<Res> {
         // console.log({ inseredId: newUser.id });
 
         const verificationToken = await createVerificationTokenAction(newUser.email)
-        console.log(verificationToken);
+        console.log('token', verificationToken.token, 'productionUrl', productionUrl);
 
-        // await sendSignupUserEmail({
-        //     email: newUser.email,
-        //     token: verificationToken.token
-        // })
+
 
         await workflowClient.trigger({
             url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
@@ -117,6 +119,7 @@ export async function signUpAction(values: unknown): Promise<Res> {
                 email,
                 name,
                 token: verificationToken.token,
+                productionUrl
             },
         });
 
@@ -130,5 +133,5 @@ export async function signUpAction(values: unknown): Promise<Res> {
         console.error(err)
         return { success: false, error: "Internal Server Error", statusCode: 500 }
     }
-    // return { success: true }
+    return { success: true }
 }

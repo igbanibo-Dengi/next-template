@@ -4,8 +4,6 @@ import { users } from "@/database/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
 import { getWelcomeEmailHTML } from "@/lib/emails/WelcomeEmail";
-import config from "@/lib/config";
-// import { getWelcomeEmailHTML } from "@/lib/emails/WelcomeEmail";
 
 type UserState = "non-active" | "active";
 
@@ -13,6 +11,7 @@ type InitialData = {
   email: string;
   name: string;
   token: string;
+  productionUrl: string;
 };
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -43,9 +42,8 @@ const getUserState = async (email: string): Promise<UserState> => {
 };
 
 export const { POST } = serve<InitialData>(async (context) => {
-  const { email, name, token } = context.requestPayload;
+  const { email, name, token, productionUrl } = context.requestPayload;
 
-  const productionUrl = config.env.prodApiEndpoint
 
   const verifyEmailData = {
     name,
@@ -55,6 +53,10 @@ export const { POST } = serve<InitialData>(async (context) => {
 
   // Welcome Email
   await context.run("new-signup", async () => {
+
+    console.log(`Sending email to ${email} with token ${token}, name ${name}, productionUrl ${productionUrl}`);
+
+
     await sendEmail({
       email,
       subject: "Welcome to Igbanibo's Platform 🎉",
