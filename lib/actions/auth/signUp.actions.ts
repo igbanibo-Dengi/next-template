@@ -61,7 +61,7 @@ export async function signUpAction(values: unknown): Promise<Res> {
 
                 // send vefification email
                 await workflowClient.trigger({
-                    url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+                    url: `${productionUrl}/api/workflows/onboarding`,
                     body: {
                         email,
                         name,
@@ -114,7 +114,7 @@ export async function signUpAction(values: unknown): Promise<Res> {
 
 
         await workflowClient.trigger({
-            url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+            url: `${productionUrl}/api/workflows/onboarding`,
             body: {
                 email,
                 name,
@@ -133,5 +133,4 @@ export async function signUpAction(values: unknown): Promise<Res> {
         console.error(err)
         return { success: false, error: "Internal Server Error", statusCode: 500 }
     }
-    return { success: true }
 }
