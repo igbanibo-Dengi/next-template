@@ -32,6 +32,7 @@ export const SignupForm = () => {
   const submit = async (values: SignupInput) => {
     const res = await signUpAction(values);
 
+    //for rate limiting
     if (res.redirectTo) {
       router.push(res.redirectTo);
       return;
@@ -61,7 +62,7 @@ export const SignupForm = () => {
   if (success) {
     return (
       <div>
-        <p>User Successfully Cerated</p>
+        <p>User Successfully Created</p>
 
         <span>
           CLick {""}

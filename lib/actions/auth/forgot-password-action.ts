@@ -4,7 +4,8 @@ import { findUserByEmail } from "@/resources/user.queries";
 import { ForgotPasswordSchema } from "@/validators/forgot-password-validator";
 import * as v from "valibot";
 import { createVerificationTokenAction } from "../admin/create-verification-token-action";
-import { sendForgotPasswordEmail } from "./mail/send-forgot-password-email";
+import { sendEmail } from "@/lib/workflow";
+import { sendForgotPasswordEmail } from "@/lib/emails/forgotPassword";
 
 type Res =
     | { success: true }
@@ -39,9 +40,17 @@ export async function forgotPasswordAction(values: unknown): Promise<Res> {
             existingUser.email,
         );
 
-        await sendForgotPasswordEmail({
-            email: existingUser.email,
-            token: verificationToken.token,
+        // await sendForgotPasswordEmail({
+        //     email: existingUser.email,
+        //     token: verificationToken.token,
+        // });
+
+        const token = verificationToken.token;
+
+        await sendEmail({
+            email,
+            subject: "Welcome to Igbanibo's Platform 🎉",
+            message: sendForgotPasswordEmail(token),
         });
 
         return { success: true };

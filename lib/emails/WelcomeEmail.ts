@@ -11,7 +11,7 @@ export const getWelcomeEmailHTML = ({ name, token, productionUrl }: WelcomeEmail
      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
           <h2 style="text-align: center; color: #3b82f6;">Authy</h2>
     
-          <p>Hi there, Mr.${name}</p>
+          <p>Hi there, ${name}</p>
     
           <p>Please use the link below to verify your email address and continue on Authy. This link will expire in ${VERIFICATION_TOKEN_EXP_MIN} minutes. If you don't think you should be receiving this email, you can safely ignore it.</p>
     
