@@ -1,14 +1,12 @@
-// lib/emails/welcomeEmail.ts
-
-import config from "../config";
 import { VERIFICATION_TOKEN_EXP_MIN } from "../constants";
 
 interface WelcomeEmailProps {
   name: string;
   token: string;
+  productionUrl: string;
 }
 
-export const getWelcomeEmailHTML = ({ name, token }: WelcomeEmailProps) => {
+export const getWelcomeEmailHTML = ({ name, token, productionUrl }: WelcomeEmailProps) => {
   return `
      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
           <h2 style="text-align: center; color: #3b82f6;">Authy</h2>
@@ -18,7 +16,7 @@ export const getWelcomeEmailHTML = ({ name, token }: WelcomeEmailProps) => {
           <p>Please use the link below to verify your email address and continue on Authy. This link will expire in ${VERIFICATION_TOKEN_EXP_MIN} minutes. If you don't think you should be receiving this email, you can safely ignore it.</p>
     
           <p style="text-align: center;">
-            <a href="${config.env.prodApiEndpoint}/auth/sign-up/verify-email?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Verify Email</a>
+            <a href="${productionUrl}/auth/sign-up/verify-email?token=${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Verify Email</a>
           </p>
           
           <br />
@@ -28,4 +26,4 @@ export const getWelcomeEmailHTML = ({ name, token }: WelcomeEmailProps) => {
           <p style="text-align: center; font-size: 12px; color: #aaa;">&copy; 2024 Authy. All rights reserved.</p>
         </div>
   `;
-};
+}; 

@@ -4,6 +4,7 @@ import { users } from "@/database/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
 import { getWelcomeEmailHTML } from "@/lib/emails/WelcomeEmail";
+import config from "@/lib/config";
 // import { getWelcomeEmailHTML } from "@/lib/emails/WelcomeEmail";
 
 type UserState = "non-active" | "active";
@@ -44,9 +45,12 @@ const getUserState = async (email: string): Promise<UserState> => {
 export const { POST } = serve<InitialData>(async (context) => {
   const { email, name, token } = context.requestPayload;
 
+  const productionUrl = config.env.prodApiEndpoint
+
   const verifyEmailData = {
     name,
     token,
+    productionUrl,
   }
 
   // Welcome Email
