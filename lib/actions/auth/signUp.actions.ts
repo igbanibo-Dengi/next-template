@@ -130,6 +130,5 @@ export async function signUpAction(values: unknown): Promise<Res> {
         console.error(err)
         return { success: false, error: "Internal Server Error", statusCode: 500 }
     }
-
-    return { success: true }
+    // return { success: true }
 }
